@@ -1,0 +1,63 @@
+# Name the components on this agent
+a1.sources = r1
+a1.sinks = k1 k2 k3 k4
+a1.channels = c1 c2 c3 c4
+
+
+#
+# Product
+#
+
+# Describe/configure the source
+a1.sources.r1.channels = c1 c2 c3 c4
+a1.sources.r1.type = a.b.CustomSourceTail
+a1.sources.r1.myfile = /home/cloudera/my/input3000.txt
+a1.sources.r1.myindexdate = 2
+
+# Describe the sink
+a1.sinks.k1.type = logger
+
+a1.sinks.k2.type = hdfs
+a1.sinks.k2.hdfs.path = /user/cloudera/event/%Y/%m/%d
+a1.sinks.k2.hdfs.useLocalTimeStamp = false
+a1.sinks.k2.hdfs.writeFormat = txt
+a1.sinks.k2.hdfs.fileType = DataStream
+a1.sinks.k2.hdfs.rollInterval = 0
+a1.sinks.k2.hdfs.batchSize = 1000
+a1.sinks.k2.hdfs.rollSize = 0
+a1.sinks.k2.hdfs.rollCount = 1000
+a1.sinks.k4.hdfs.threadsPoolSize = 20
+
+a1.sinks.k3.type = file_roll
+a1.sinks.k3.sink.directory = /home/cloudera/my
+a1.sinks.k3.hdfs.rollInterval = 0
+
+# for hive sql
+a1.sinks.k4.type = hdfs
+a1.sinks.k4.hdfs.path = /user/cloudera/product/dt=%Y-%m-%d
+a1.sinks.k4.hdfs.rollInterval = 0
+a1.sinks.k4.hdfs.rollCount = 20000
+a1.sinks.k4.hdfs.rollSize = 0
+a1.sinks.k4.hdfs.fileType = DataStream
+a1.sinks.k4.hdfs.threadsPoolSize = 20
+
+
+# Use a channel which buffers events in memory
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 10000
+a1.channels.c1.transactionCapacity = 1000
+a1.channels.c2.type = memory
+a1.channels.c2.capacity = 10000
+a1.channels.c2.transactionCapacity = 1000
+a1.channels.c3.type = memory
+a1.channels.c3.capacity = 10000
+a1.channels.c3.transactionCapacity = 1000
+a1.channels.c4.type = memory
+a1.channels.c4.capacity = 10000
+a1.channels.c4.transactionCapacity = 1000
+
+# Bind the source and sink to the channel
+a1.sinks.k1.channel = c1
+a1.sinks.k2.channel = c2
+a1.sinks.k3.channel = c3
+a1.sinks.k4.channel = c4
