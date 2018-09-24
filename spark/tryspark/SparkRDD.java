@@ -7,7 +7,6 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.Function;
 
 import scala.Tuple2;
 import schema.CountryIP;
@@ -103,29 +102,9 @@ public class SparkRDD {
         // load data
         //
 
-        JavaRDD<Product> rddProduct = sc.textFile(PRODUCT_PATH).map(new Function<String, Product>() {
-            private static final long serialVersionUID = -4562616263303571036L;
-
-            public Product call(String line) throws Exception {
-                return new Product(line.split(","));
-            }
-        });
-
-        JavaRDD<CountryName> rddCountryName = sc.textFile(COUNTRYNAME_PATH).map(new Function<String, CountryName>() {
-            private static final long serialVersionUID = -4562616263303571036L;
-
-            public CountryName call(String line) throws Exception {
-                return new CountryName(line.split(","));
-            }
-        });
-
-        JavaRDD<CountryIP> rddCountryIP = sc.textFile(COUNTRYIP_PATH).map(new Function<String, CountryIP>() {
-            private static final long serialVersionUID = -4562616263303571036L;
-
-            public CountryIP call(String line) throws Exception {
-                return new CountryIP(line.split(","));
-            }
-        });
+        JavaRDD<Product> rddProduct = sc.textFile(PRODUCT_PATH).map(f -> new Product(f.split(",")));
+        JavaRDD<CountryName> rddCountryName = sc.textFile(COUNTRYNAME_PATH).map(f -> new CountryName(f.split(",")));
+        JavaRDD<CountryIP> rddCountryIP = sc.textFile(COUNTRYIP_PATH).map(f -> new CountryIP(f.split(",")));
 
         //
         //
