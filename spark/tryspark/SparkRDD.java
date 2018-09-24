@@ -167,7 +167,8 @@ public class SparkRDD {
             });
             // save to database
             StructType schema = DataTypes
-                    .createStructType(Arrays.asList(DataTypes.createStructField("category", DataTypes.StringType, true),
+                    .createStructType(Arrays.asList(
+                            DataTypes.createStructField("category", DataTypes.StringType, true),
                             DataTypes.createStructField("cnt", DataTypes.IntegerType, true)));
             JavaRDD<Row> rddRow = rdd51a.map((Tuple2<String, Integer> row) -> RowFactory.create(row._1, row._2));
             spark.createDataFrame(rddRow, schema).write().mode(SaveMode.Overwrite).jdbc(MYSQL_CONNECTION_URL + MYSQL_DB,
@@ -209,7 +210,8 @@ public class SparkRDD {
             });
             // save to database
             StructType schema = DataTypes
-                    .createStructType(Arrays.asList(DataTypes.createStructField("category", DataTypes.StringType, true),
+                    .createStructType(Arrays.asList(
+                            DataTypes.createStructField("category", DataTypes.StringType, true),
                             DataTypes.createStructField("name", DataTypes.StringType, true),
                             DataTypes.createStructField("cnt", DataTypes.IntegerType, true)));
             JavaRDD<Row> rddRow = rdd52a.map(
