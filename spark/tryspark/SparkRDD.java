@@ -14,6 +14,70 @@ import schema.CountryIP;
 import schema.CountryName;
 import schema.Product;
 
+//5.1 sortBy
+//
+//(category9,163)
+//(category2,162)
+//(category3,162)
+//(category5,162)
+//(category12,159)
+//(category10,156)
+//(category18,155)
+//(category16,154)
+//(category8,151)
+//(category7,150)
+//
+//5.1 sortByKey
+//
+//(163,category9)
+//(162,category2)
+//(162,category3)
+//(162,category5)
+//(159,category12)
+//(156,category10)
+//(155,category18)
+//(154,category16)
+//(151,category8)
+//(150,category7)
+//
+//5.2 sortBy
+//
+//((category0,product16),16)
+//((category3,product16),16)
+//((category9,product9),15)
+//((category3,product10),15)
+//((category3,product4),14)
+//((category16,product16),14)
+//((category18,product10),14)
+//((category10,product1),14)
+//((category18,product18),14)
+//((category12,product19),14)
+//
+//6.1 
+//
+//(534.0,4177887238)
+//(533.5,3609693019)
+//(532.1,4182146946)
+//(531.5,644197344)
+//(531.4,468617227)
+//(531.1,1411779490)
+//(530.8,1949334692)
+//(530.3,337244083)
+//(528.6,1050574175)
+//(528.3,2962904592)
+//
+//6.1 join
+//
+//sorted:
+//533.5 6252001 "United States" 215.32.0.0/11
+//531.5 6252001 "United States" 38.101.128.0/18
+//531.4 1835841 "Republic of Korea" 27.232.0.0/13
+//531.1 3144096 Norway 84.38.8.0/21
+//530.8 1819730 "Hong Kong" 116.48.0.0/15
+//530.3 6252001 "United States" 20.0.0.0/11
+//528.6 2921044 Germany 62.158.0.0/16
+//528.3 3017382 France 176.128.0.0/10
+
 public class SparkRDD {
     private static final String DATA_PATH = "/Users/Shared/test/";
     private static final String PRODUCT_PATH = DATA_PATH + "input3000.txt";
