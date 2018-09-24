@@ -1,5 +1,12 @@
 package tryspark;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
+import java.util.Properties;
+
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -7,6 +14,12 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.RowFactory;
+import org.apache.spark.sql.SaveMode;
+import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.StructType;
 
 import scala.Tuple2;
 import schema.CountryIP;
@@ -78,15 +91,39 @@ import schema.Product;
 //528.3 3017382 France 176.128.0.0/10
 
 public class SparkRDD {
+    private static final String MYSQL_DB = "dbo3";
+    // private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String MYSQL_CONNECTION_URL = "jdbc:mysql://localhost/";
+    private static final String MYSQL_USERNAME = "root";
+    private static final String MYSQL_PWD = "password";
+
     private static final String DATA_PATH = "/Users/Shared/test/";
     private static final String PRODUCT_PATH = DATA_PATH + "input3000.txt";
     private static final String COUNTRYIP_PATH = DATA_PATH + "CountryIP.csv";
     private static final String COUNTRYNAME_PATH = DATA_PATH + "CountryName.csv";
 
-    public static void main(String args[]) {
+    private static Connection prepareMySql(String dbname) throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        System.out.println("Connecting to database...");
+        Connection conn = DriverManager.getConnection(MYSQL_CONNECTION_URL, MYSQL_USERNAME, MYSQL_PWD);
+        System.out.println("Creating database...");
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS " + dbname);
+        stmt.close();
+        System.out.println("Database created successful");
+        return conn;
+    }
+
+    public static void main(String args[]) throws ClassNotFoundException, SQLException {
 
         Logger.getLogger("org").setLevel(Level.WARN);
         Logger.getLogger("akka").setLevel(Level.WARN);
+
+        Properties connectionProperties = new Properties();
+        connectionProperties.put("user", MYSQL_USERNAME);
+        connectionProperties.put("password", MYSQL_PWD);
+
+        prepareMySql(MYSQL_DB);
 
         //
         // become a record in RDD
@@ -97,6 +134,8 @@ public class SparkRDD {
 
         // Create Spark Context with configuration
         JavaSparkContext sc = new JavaSparkContext(conf);
+
+        SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
 
         //
         // load data
@@ -126,6 +165,13 @@ public class SparkRDD {
             rdd51a.take(10).stream().forEach(a -> {
                 System.out.println(a);
             });
+            // save to database
+            StructType schema = DataTypes
+                    .createStructType(Arrays.asList(DataTypes.createStructField("category", DataTypes.StringType, true),
+                            DataTypes.createStructField("cnt", DataTypes.IntegerType, true)));
+            JavaRDD<Row> rddRow = rdd51a.map((Tuple2<String, Integer> row) -> RowFactory.create(row._1, row._2));
+            spark.createDataFrame(rddRow, schema).write().mode(SaveMode.Overwrite).jdbc(MYSQL_CONNECTION_URL + MYSQL_DB,
+                    "table51", connectionProperties);
         }
 
         // II approach
@@ -161,6 +207,15 @@ public class SparkRDD {
             rdd52a.take(10).stream().forEach(a -> {
                 System.out.println(a);
             });
+            // save to database
+            StructType schema = DataTypes
+                    .createStructType(Arrays.asList(DataTypes.createStructField("category", DataTypes.StringType, true),
+                            DataTypes.createStructField("name", DataTypes.StringType, true),
+                            DataTypes.createStructField("cnt", DataTypes.IntegerType, true)));
+            JavaRDD<Row> rddRow = rdd52a.map(
+                    (Tuple2<Tuple2<String, String>, Integer> row) -> RowFactory.create(row._1._1, row._1._2, row._2));
+            spark.createDataFrame(rddRow, schema).write().mode(SaveMode.Overwrite).jdbc(MYSQL_CONNECTION_URL + MYSQL_DB,
+                    "table52", connectionProperties);
         }
 
         //
@@ -223,6 +278,20 @@ public class SparkRDD {
             // a._2._2._1.getNetwork(),
             // a._2._2._2.getCountryName(), a._2._2._2.getGeonameId()));
             // });
+
+            //| sump|            IP|geonameId|        countryName|        Network
+            // save to database
+            StructType schema = DataTypes
+                    .createStructType(Arrays.asList(
+                            DataTypes.createStructField("sump", DataTypes.FloatType, true),
+                            DataTypes.createStructField("geonameId", DataTypes.LongType, true),
+                            DataTypes.createStructField("countryName", DataTypes.StringType, true),
+                            DataTypes.createStructField("Network", DataTypes.StringType, true)));
+            JavaRDD<Row> rddRow = rdd61b.map(
+                    (Tuple2<Tuple2<Float, Long>, Tuple2<Long, Tuple2<CountryIP, CountryName>>> row) -> 
+                    RowFactory.create(row._1._1, row._1._2, row._2._2._2.getCountryName(), row._2._2._1.getNetwork()));
+            spark.createDataFrame(rddRow, schema).write().mode(SaveMode.Overwrite).jdbc(MYSQL_CONNECTION_URL + MYSQL_DB,
+                    "table61", connectionProperties);
 
         }
 
