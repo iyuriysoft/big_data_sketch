@@ -1,9 +1,8 @@
 
 # There are three input datas: 
 
---
--- table Product
---
+
+- table Product
 
 create table product (
   name string,
@@ -19,9 +18,7 @@ product14, 500.0, 2010-10-20 18:14:09.600, category6, 46.62.153.220
 ...
 
 
---
--- table CountryIP
---
+- table CountryIP
 
 create external table CountryIP (
   network string,
@@ -38,9 +35,7 @@ CountryIP.csv
 ...
 
 
---
--- table CountryName
---
+- table CountryName
 
 create table CountryName (
   geoname_id int,
@@ -60,9 +55,9 @@ CountryName.csv
 
 # Tasks
 
-5.1 Select top 10 most frequently purchased categories (using only Product)
-5.2 Select top 10 most frequently purchased product in each category (using only Product)
-6.3 Select top 10 countries with the highest money spending (using Product, CountryName, CountryIP)
+- 5.1 Select top 10 most frequently purchased categories (using only Product)
+- 5.2 Select top 10 most frequently purchased product in each category (using only Product)
+- 6.3 Select top 10 countries with the highest money spending (using Product, CountryName, CountryIP)
 
 
 Theare are three approaches to decide the tasks: RDD, Dataframe, SQL
