@@ -1,7 +1,7 @@
 
-Custom Source for csv-files
+### Custom Source for csv-files
 
-Parameters:
+**Parameters**:
 
 myfile - path for input file (type: string; default: 'input.txt')
 
