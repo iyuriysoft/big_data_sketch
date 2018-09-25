@@ -14,83 +14,56 @@ As a result, the output data are in MySql
 ## There are three input files: 
 
 
-- table Product
+- ### Table Product
 
-create table product {
+create table product {<br>
+  name string,<br>
+  price float,<br>
+  dt1 timestamp,<br>
+  category string,<br>
+  ip string<br>
+)<br>
 
-  name string,
-  
-  price float,
-  
-  dt1 timestamp,
-  
-  category string,
-  
-  ip string
-  
-)
+#### input3000.txt
 
-**input3000.txt**
-
-product4, 502.5, 2010-10-17 19:57:12.336, category15, 39.251.196.245
-
-product14, 500.0, 2010-10-20 18:14:09.600, category6, 46.62.153.220
-
-...
+product4, 502.5, 2010-10-17 19:57:12.336, category15, 39.251.196.245<br>
+product14, 500.0, 2010-10-20 18:14:09.600, category6, 46.62.153.220<br>
+...<br>
 
 
-- table CountryIP
+- ### Table CountryIP
 
-create external table CountryIP (
+create external table CountryIP (<br>
+  network string,<br>
+  geoname_id int,<br>
+  registered_country_geoname_id int,<br>
+  represented_country_geoname_id int,<br>
+  is_anonymous_proxy boolean,<br>
+  is_satellite_provider boolean<br>
+)<br>
 
-  network string,
-  
-  geoname_id int,
-  
-  registered_country_geoname_id int,
-  
-  represented_country_geoname_id int,
-  
-  is_anonymous_proxy boolean,
-  
-  is_satellite_provider boolean
-  
-)
+#### CountryIP.csv
 
-**CountryIP.csv**
-
-1.0.0.0/24,2077456,2077456,,0,0
-
-1.0.1.0/24,1814991,1814991,,0,0
-
-...
+1.0.0.0/24,2077456,2077456,,0,0<br>
+1.0.1.0/24,1814991,1814991,,0,0<br>
+...<br>
 
 
-- table CountryName
+- ### Table CountryName
 
-create table CountryName (
+create table CountryName (<br>
+  geoname_id int,<br>
+  locale_code string,<br>
+  continent_code string,<br>
+  continent_name string,<br>
+  country_iso_code string,<br>
+  country_name string,<br>
+  is_in_e boolean<br>
+)<br>
 
-  geoname_id int,
-  
-  locale_code string,
-  
-  continent_code string,
-  
-  continent_name string,
-  
-  country_iso_code string,
-  
-  country_name string,
-  
-  is_in_e boolean
-  
-)
+#### CountryName.csv
 
-**CountryName.csv**
-
-49518,en,AF,Africa,RW,Rwanda,0
-
-51537,en,AF,Africa,SO,Somalia,0
-
-...
+49518,en,AF,Africa,RW,Rwanda,0<br>
+51537,en,AF,Africa,SO,Somalia,0<br>
+...<br>
 
