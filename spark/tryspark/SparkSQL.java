@@ -1,7 +1,5 @@
 package tryspark;
 
-import static org.apache.spark.sql.functions.col;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -103,7 +101,7 @@ import schema.Product;
 //|528.3| 176.154.86.16|  3017382|             France| 176.128.0.0/10|
 //+-----+--------------+---------+-------------------+---------------+
 
-public class SparkDataframe {
+public class SparkSQL {
     private static final String MYSQL_DB = "dbo2";
     private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
     private static final String MYSQL_CONNECTION_URL = "jdbc:mysql://localhost/";
@@ -147,27 +145,29 @@ public class SparkDataframe {
         //
 
         // Define Spark Configuration
-        SparkConf conf = new SparkConf().setAppName("Getting-Started").setMaster("local[*]");
+        SparkConf conf = new SparkConf().setAppName("Getting-Started").setMaster("local[2]");
 
         // Create Spark Context with configuration
         JavaSparkContext sc = new JavaSparkContext(conf);
         SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
 
-        // Create RDD & Dataframe
+        // Create RDD
         JavaRDD<Product> rddP = sc.textFile(PRODUCT_PATH).map(f -> new Product(f.split(",")));
+        // Create Dataframe
         Dataset<Row> df = spark.createDataFrame(rddP, Product.class);
 
         System.out.println("Table product");
+        // Register the DataFrame as a temporary view
         df.createOrReplaceTempView("product");
-        Dataset<Row> df2 = df.select("*").limit(3);
+        Dataset<Row> df2 = spark.sql("SELECT * FROM product LIMIT 3");
         df2.show(5, false);
 
         //
         // 5.1
         //
         System.out.println("Select top 10  most frequently purchased categories:");
-        Dataset<Row> df_51 = df.select("category").groupBy("category").count().withColumnRenamed("count", "cnt")
-                .orderBy(col("cnt").desc()).limit(10);
+        Dataset<Row> df_51 = spark
+                .sql("SELECT category, COUNT(*) as cnt FROM product " + "GROUP BY category ORDER BY cnt DESC LIMIT 10");
         df_51.show();
         df_51.select("category", "cnt").write().mode(SaveMode.Overwrite).csv(OUT_51_PATH);
         df_51.write().mode(SaveMode.Overwrite).jdbc(MYSQL_CONNECTION_URL + MYSQL_DB, "table51", connectionProperties);
@@ -176,11 +176,9 @@ public class SparkDataframe {
         // 5.2
         //
         System.out.println("Select top 10 most frequently purchased product in each category:");
-        Dataset<Row> df_52 = df.select("name", "category").groupBy("name", "category").count()
-                .withColumnRenamed("count", "cnt").as("b")
-                .join((df.select("category").groupBy("category").count().orderBy(col("count").desc()).as("a")),
-                        col("a.category").equalTo(col("b.category")), "inner")
-                .orderBy(col("cnt").desc()).limit(10).select("name", "b.category", "cnt");
+        Dataset<Row> df_52 = spark.sql("SELECT tp.name, tp.category, count(*) as cnt FROM product tp INNER JOIN "
+                + "(select category, count(*) as c from product group by category order by c desc) tcat "
+                + "ON tp.category = tcat.category " + "GROUP BY tp.name, tp.category ORDER BY cnt DESC LIMIT 100");
         df_52.show();
         df_52.select("name", "category", "cnt").write().mode(SaveMode.Overwrite).csv(OUT_52_PATH);
         df_52.write().mode(SaveMode.Overwrite).jdbc(MYSQL_CONNECTION_URL + MYSQL_DB, "table52", connectionProperties);
@@ -189,8 +187,8 @@ public class SparkDataframe {
         // 6.3 with ip
         //
         System.out.println("Select top 10 IP with the highest money spending:");
-        Dataset<Row> df_63i = df.select("ip", "price").withColumn("price", df.col("price").cast("Float")).groupBy("ip")
-                .sum("price").withColumnRenamed("sum(price)", "sump").orderBy(col("sump").desc()).limit(10);
+        Dataset<Row> df_63i = spark
+                .sql("SELECT t.ip, sum(t.price) sump FROM product t GROUP BY t.ip ORDER BY sump DESC LIMIT 10");
         df_63i.show();
         df_63i.select("ip", "sump").write().mode(SaveMode.Overwrite).csv(OUT_63IP_PATH);
         df_63i.write().mode(SaveMode.Overwrite).jdbc(MYSQL_CONNECTION_URL + MYSQL_DB, "table63ip",
@@ -208,16 +206,11 @@ public class SparkDataframe {
         Dataset<Row> dfGeoName = spark.createDataFrame(rddGeoName, CountryName.class);
         dfGeoName.createOrReplaceTempView("countryname");
 
-        Dataset<Row> df_63 = df.select("ip", "IPAsLong", "price").withColumn("price", df.col("price").cast("Float"))
-                .groupBy("ip", "IPAsLong").sum("price").withColumnRenamed("sum(price)", "sump")
-                .orderBy(col("sump").desc()).limit(100).alias("tp")
-                .join(dfGeoIP.as("b"),
-                        (col("b.EndIPAsLong").$greater(df.col("IPAsLong")))
-                                .and(col("b.StartIPAsLong").$less(df.col("IPAsLong"))),
-                        "inner")
-                .join(dfGeoName.as("a"), col("a.geonameId").equalTo(col("b.geonameId")), "inner")
-                .orderBy(col("sump").desc()).limit(10)
-                .select(col("sump"), col("IP"), col("a.geonameId"), col("countryName"), col("Network"));
+        Dataset<Row> df_63 = spark.sql("SELECT tp.sump, tp.IP, tcn.geonameId, tcn.countryName, tc.Network FROM "
+                + "(select IP, IPAsLong, sum(price) sump from product group by IP, IPAsLong order by sump desc limit 100) tp, "
+                + "(select geonameId, Network, StartIPAsLong, EndIPAsLong from countryip) tc "
+                + "INNER JOIN countryname tcn ON tc.geonameId = tcn.geonameId "
+                + "WHERE tp.IPAsLong <= tc.EndIPAsLong AND tp.IPAsLong >= tc.StartIPAsLong ORDER BY tp.sump DESC LIMIT 10");
         df_63.show();
         df_63.select("sump", "IP", "countryName").write().mode(SaveMode.Overwrite).csv(OUT_63_PATH);
         df_63.write().mode(SaveMode.Overwrite).jdbc(MYSQL_CONNECTION_URL + MYSQL_DB, "table63", connectionProperties);

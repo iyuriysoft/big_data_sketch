@@ -92,7 +92,7 @@ import schema.Product;
 
 public class SparkRDD {
     private static final String MYSQL_DB = "dbo3";
-    // private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
     private static final String MYSQL_CONNECTION_URL = "jdbc:mysql://localhost/";
     private static final String MYSQL_USERNAME = "root";
     private static final String MYSQL_PWD = "password";
@@ -103,7 +103,7 @@ public class SparkRDD {
     private static final String COUNTRYNAME_PATH = DATA_PATH + "CountryName.csv";
 
     private static Connection prepareMySql(String dbname) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName(MYSQL_DRIVER);
         System.out.println("Connecting to database...");
         Connection conn = DriverManager.getConnection(MYSQL_CONNECTION_URL, MYSQL_USERNAME, MYSQL_PWD);
         System.out.println("Creating database...");
