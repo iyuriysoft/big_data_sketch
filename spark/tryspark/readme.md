@@ -13,9 +13,7 @@ As a result, the output data are in MySql
 ## There are three input files: 
 
 
-- table Product
-
-**input3000.txt**
+### input3000.txt
 
 product4, 502.5, 2010-10-17 19:57:12.336, category15, 39.251.196.245
 
@@ -24,9 +22,7 @@ product14, 500.0, 2010-10-20 18:14:09.600, category6, 46.62.153.220
 ...
 
 
-- table CountryIP
-
-**CountryIP.csv**
+### CountryIP.csv
 
 1.0.0.0/24,2077456,2077456,,0,0
 
@@ -35,9 +31,7 @@ product14, 500.0, 2010-10-20 18:14:09.600, category6, 46.62.153.220
 ...
 
 
-- table CountryName
-
-**CountryName.csv**
+### CountryName.csv
 
 49518,en,AF,Africa,RW,Rwanda,0
 
