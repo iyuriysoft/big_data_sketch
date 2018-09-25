@@ -4,13 +4,13 @@
 
 - table Product
 
-create table product (
-  name string,
-  price float,
-  dt1 timestamp,
-  category string,
-  ip string
-)
+create table product (\
+  name string,\
+  price float,\
+  dt1 timestamp,\
+  category string,\
+  ip string\
+)\
 
 input3000.txt 
 product4, 502.5, 2010-10-17 19:57:12.336, category15, 39.251.196.245
