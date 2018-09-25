@@ -8,7 +8,7 @@
 Tasks are implemented in three different approaches: RDD, Dataframe, SQL
 
 
-## There are three input datas: 
+## There are three input files: 
 
 
 - table Product
