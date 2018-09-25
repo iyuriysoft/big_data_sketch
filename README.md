@@ -4,7 +4,13 @@
   1. Generate random data
 
 <p>
-  2. Flume
+  2. Load geo data from http://dev.maxmind.com/geoip/geoip2/geolite2/
+
+'GeoLite2-Country-Blocks-IPv4.csv' as 'CountryIP.csv'<br>
+'GeoLite2-Country-Locations-en.csv' as 'CountryName.csv'<br>
+
+<p>
+  3. Flume
   
 <p>
-  3. HiveSQL
+  4. HiveSQL
