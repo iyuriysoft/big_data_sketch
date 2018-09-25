@@ -1,5 +1,5 @@
 
-Custom Source
+Custom Source for csv-files
 
 Parameters:
 
