@@ -1,10 +1,11 @@
 
+<p>
 1. Create tables from HDFS
 
 ```bash
 > hive -f create_tables.sql
 ```
-
+<p>
 2. Add UDF to Hive (change path and names according to yours):
 
 ```bash
@@ -14,7 +15,7 @@ create temporary function getStartIP as 'a.udf.GetStartIP';
 create temporary function getEndIP as 'a.udf.GetEndIP';
 create temporary function getIP as 'a.udf.GetIP';"
 ```
-
+<p>
 3. Start tasks:
 
 ```bash
