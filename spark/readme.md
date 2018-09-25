@@ -6,7 +6,7 @@
 - 6.3 Select top 10 countries with the highest money spending (using Product, CountryName, CountryIP)
 
 
-Tasks are implemented in three different approaches: RDD, Dataframe, SQL
+Tasks are implemented in three **different approaches: RDD, Dataframe, SQL**
 
 As a result, the output data are in MySql
 
