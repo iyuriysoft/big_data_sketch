@@ -27,7 +27,7 @@ create table product {
   
 )
 
-input3000.txt
+**input3000.txt**
 
 product4, 502.5, 2010-10-17 19:57:12.336, category15, 39.251.196.245
 
@@ -54,7 +54,7 @@ create external table CountryIP (
   
 )
 
-CountryIP.csv
+**CountryIP.csv**
 
 1.0.0.0/24,2077456,2077456,,0,0
 
@@ -83,7 +83,7 @@ create table CountryName (
   
 )
 
-CountryName.csv
+**CountryName.csv**
 
 49518,en,AF,Africa,RW,Rwanda,0
 
