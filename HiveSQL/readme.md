@@ -1,5 +1,11 @@
 
-Add UDF to Hive (change path and names according to yours):
+1. Create tables from HDFS
+
+```bash
+> hive -f create_tables.sql
+```
+
+2. Add UDF to Hive (change path and names according to yours):
 
 ```bash
 > hive -e "delete jar /home/cloudera/my/b-0.0.1.jar;
@@ -9,7 +15,7 @@ create temporary function getEndIP as 'a.udf.GetEndIP';
 create temporary function getIP as 'a.udf.GetIP';"
 ```
 
-Start query:
+3. Start tasks:
 
 ```bash
 > hive -f select_51_52.sql
