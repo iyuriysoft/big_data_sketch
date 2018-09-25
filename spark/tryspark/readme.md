@@ -1,3 +1,12 @@
+## Tasks
+
+- 5.1 Select top 10 most frequently purchased categories (using only Product)
+- 5.2 Select top 10 most frequently purchased product in each category (using only Product)
+- 6.3 Select top 10 countries with the highest money spending (using Product, CountryName, CountryIP)
+
+
+Tasks are implemented in three different approaches: RDD, Dataframe, SQL
+
 
 ## There are three input datas: 
 
@@ -81,15 +90,4 @@ CountryName.csv
 51537,en,AF,Africa,SO,Somalia,0
 
 ...
-
-
-
-## Tasks
-
-- 5.1 Select top 10 most frequently purchased categories (using only Product)
-- 5.2 Select top 10 most frequently purchased product in each category (using only Product)
-- 6.3 Select top 10 countries with the highest money spending (using Product, CountryName, CountryIP)
-
-
-Theare are three approaches to decide the tasks: RDD, Dataframe, SQL
 
