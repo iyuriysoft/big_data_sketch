@@ -1,5 +1,5 @@
 
-# There are three input datas: 
+## There are three input datas: 
 
 
 - table Product
@@ -37,9 +37,9 @@ CountryIP.csv
 
 - table CountryName
 
-create table CountryName (
-  geoname_id int,
-  locale_code string,
+create table CountryName ( . 
+  geoname_id int,  
+  locale_code string,  
   continent_code string,
   continent_name string,
   country_iso_code string,
@@ -53,7 +53,7 @@ CountryName.csv
 ...
 
 
-# Tasks
+## Tasks
 
 - 5.1 Select top 10 most frequently purchased categories (using only Product)
 - 5.2 Select top 10 most frequently purchased product in each category (using only Product)
