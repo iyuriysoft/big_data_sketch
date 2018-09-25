@@ -4,8 +4,8 @@
 
 - table Product
 
-create table product (\
-  name string,\
+create table product (\s
+  name string,\s
   price float,\
   dt1 timestamp,\
   category string,\
