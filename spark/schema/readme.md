@@ -1,2 +1,2 @@
 
-Used in Dataframe & SQL approaches
+Used in Dataframe & SQL approaches only
