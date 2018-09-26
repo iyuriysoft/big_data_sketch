@@ -1,0 +1,156 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>a</groupId>
+	<artifactId>b</artifactId>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
+
+	<!--<repositories> <repository> <id>maven-restlet</id> <name>Public online 
+		Restlet repository</name> <url>http://maven.restlet.org</url> </repository> 
+		</repositories> <name>b</name> <url>http://maven.apache.org</url> <url>http://maven.restlet.org</url> 
+		<url>http://central.maven.org/maven2/</url> -->
+
+	<repositories>
+		<repository>
+			<id>maven_jdo2</id>
+			<name>repository jdo2</name>
+			<url>https://repository.cloudera.com/content/repositories/third-party/</url>
+		</repository>
+		<repository>
+			<id>maven</id>
+			<name>repository</name>
+			<url>http://central.maven.org</url>
+		</repository>
+    <!-- <repository>
+			<id>apache</id>
+			<name>repository apache</name>
+			<url>http://maven.apache.org</url>
+		</repository> -->
+		<repository>
+			<id>scala-tools</id>
+			<url>https://oss.sonatype.org/content/groups/scala-tools</url>
+		</repository>
+		<!--<repository> <id>apache</id> <url>https://repository.apache.org/content/repositories/releases</url> 
+			</repository> -->
+	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<flume.version>1.6.0</flume.version>
+		<hadoop.version>0.20.2</hadoop.version>
+		<hive.version>0.10.0</hive.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>a.testdata.CreateTestData</mainClass>
+						</manifest>
+					</archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming_2.10</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-core</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/javax.jdo/jdo2-api -->
+		<dependency>
+			<groupId>javax.jdo</groupId>
+			<artifactId>jdo2-api</artifactId>
+			<version>2.3-ec</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.flume</groupId>
+			<artifactId>flume-ng-core</artifactId>
+			<version>${flume.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.flume.flume-ng-sources</groupId>
+			<artifactId>flume-jms-source</artifactId>
+			<version>${flume.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flume.flume-ng-sinks</groupId>
+			<artifactId>flume-hdfs-sink</artifactId>
+			<version>${flume.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flume.flume-ng-sinks</groupId>
+			<artifactId>flume-ng-elasticsearch-sink</artifactId>
+			<version>${flume.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flume.flume-ng-sinks</groupId>
+			<artifactId>flume-ng-hbase-sink</artifactId>
+			<version>${flume.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flume</groupId>
+			<artifactId>flume-ng-sdk</artifactId>
+			<version>${flume.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.flume</groupId>
+			<artifactId>flume-ng-embedded-agent</artifactId>
+			<version>${flume.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-jms_1.1_spec</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-exec</artifactId>
+			<version>${hive.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-metastore</artifactId>
+			<version>${hive.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-pdk</artifactId>
+			<version>${hive.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
