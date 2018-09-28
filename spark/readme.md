@@ -11,7 +11,7 @@ Tasks are implemented in three different approaches: **RDD, Dataframe, SQL**
 As a result, the output data are in MySql
 
 
-## There are three input files: 
+### There are three input files: 
 
 - Product (input3000.txt)
 ```
@@ -37,7 +37,7 @@ product14, 500.0, 2010-10-20 18:14:09.600, category6, 46.62.153.220
 ...
 ```
 
-Output tables in MySql like this:
+### Output tables in MySql like this:
 
 ```sql
 CREATE TABLE `table51` (
