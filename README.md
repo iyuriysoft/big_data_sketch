@@ -41,8 +41,6 @@ Start Flume like this:
 
 ```bash
 > bin/flume-ng agent -n a1 -c conf -f conf/flume_product.template -Dflume.root.logger=TRACE,console
-> bin/flume-ng agent -n a1 -c conf -f conf/flume_countryIP.template -Dflume.root.logger=TRACE,console
-> bin/flume-ng agent -n a1 -c conf -f conf/flume_countryName.template -Dflume.root.logger=TRACE,console
 ```
 
 ### Pulls data from local file to HDFS
